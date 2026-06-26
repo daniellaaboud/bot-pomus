@@ -1,0 +1,15 @@
+{
+  "name": "whatsapp-bot-pomus",
+  "version": "1.0.0",
+  "description": "WhatsApp Bot for Instituto Pomus",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "github:pedroslopez/whatsapp-web.js#main"
+  }
+}

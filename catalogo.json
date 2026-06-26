@@ -1,0 +1,34 @@
+{
+  "profissionais": {
+    "4511118962720769": "Dra. Daniella Aboud",
+    "6705059820732417": "Dra. Thaiane Souza",
+    "6065811383910401": "Lynda Ferreira",
+    "6616381373022209": "Ana",
+    "4557512765341697": "Dra. Yolanda Gondim"
+  },
+  "servicos": [
+    { "id": "s1", "categoria": "Harmonização Facial e corporal", "nome": "Bioestimuladores de Colágeno", "preco": "R$ 1.800 à vista (40% OFF) / R$ 2.250 no cartão (25% OFF)", "profissionaisAutorizados": ["4511118962720769", "6705059820732417"] },
+    { "id": "s2", "categoria": "Harmonização Facial e corporal", "nome": "Toxina Botulínica", "preco": "R$ 840 à vista (40% OFF) / R$ 1.050 no cartão (25% OFF)", "profissionaisAutorizados": ["4511118962720769", "6705059820732417"] },
+    { "id": "s3", "categoria": "Harmonização Facial e corporal", "nome": "Preenchedores 1ml", "preco": "R$ 840 à vista (40% OFF) / R$ 1.050 no cartão (25% OFF)", "profissionaisAutorizados": ["4511118962720769", "6705059820732417"] },
+    
+    { "id": "s4", "categoria": "Spa e massagens", "nome": "Limpeza de Pele", "preco": "R$ 150", "profissionaisAutorizados": ["6065811383910401"] },
+    { "id": "s5", "categoria": "Spa e massagens", "nome": "Pedacinho da Grécia", "preco": "R$ 479,34", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s6", "categoria": "Spa e massagens", "nome": "Combo Santorini", "preco": "R$ 432,00", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s7", "categoria": "Spa e massagens", "nome": "Combo Atena", "preco": "R$ 323,40", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s8", "categoria": "Spa e massagens", "nome": "Combo Especial Mykonos", "preco": "R$ 269,99", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s9", "categoria": "Spa e massagens", "nome": "Combo Katherine", "preco": "R$ 239,94", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s10", "categoria": "Spa e massagens", "nome": "Combo Beleza Grega", "preco": "R$ 179,40", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s11", "categoria": "Spa e massagens", "nome": "Banho de Lua Gourmet", "preco": "R$ 179,99", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s12", "categoria": "Spa e massagens", "nome": "Banho de Lua Simples", "preco": "R$ 89,99", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s13", "categoria": "Spa e massagens", "nome": "Massagem Relaxante / Modeladora", "preco": "R$ 149,99", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s14", "categoria": "Spa e massagens", "nome": "Drenagem Linfática", "preco": "R$ 149,99", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s15", "categoria": "Spa e massagens", "nome": "Liberação Miofascial", "preco": "R$ 149,99", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s16", "categoria": "Spa e massagens", "nome": "Detox com Manta Térmica", "preco": "R$ 179,99", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s17", "categoria": "Spa e massagens", "nome": "SPA dos Pés c/ Remoção de Calos", "preco": "R$ 131,94", "profissionaisAutorizados": ["6616381373022209"] },
+    { "id": "s18", "categoria": "Spa e massagens", "nome": "Reflexologia com Escalda-Pés", "preco": "R$ 71,99", "profissionaisAutorizados": ["6616381373022209"] },
+    
+    { "id": "s19", "categoria": "Estética Intima", "nome": "Procedimento Estética Íntima", "preco": "Sob consulta", "profissionaisAutorizados": ["4511118962720769"] },
+    { "id": "s20", "categoria": "Terapia de Injetaveis", "nome": "Terapia de Injetáveis (Soro)", "preco": "Sob consulta", "profissionaisAutorizados": ["4557512765341697"] },
+    { "id": "s21", "categoria": "Consulta e planejamento de Saúde, Beleza e Bem Estar", "nome": "Consulta Avaliativa", "preco": "Gratuita", "profissionaisAutorizados": ["4511118962720769"] }
+  ]
+}
