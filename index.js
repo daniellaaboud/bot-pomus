@@ -27,7 +27,8 @@ const userStates = {};
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        args: ['--no-sandbox']
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined
     },
     pairWithPhoneNumber: {
         phoneNumber: '5598984633233' // Número da Clínica com +55 (Brasil)
