@@ -113,11 +113,11 @@ client.on('message_create', async msg => {
         return;
     }
 
-    // Ignora mensagens antigas/não lidas
+    // Ignora mensagens antigas/não lidas (REMOVIDO: Problemas de fuso/sincronia do relógio da Render)
     const tempoAtual = Math.floor(Date.now() / 1000);
-    if (msg.timestamp < tempoAtual - 30) {
-        return; 
-    }
+    // if (msg.timestamp < tempoAtual - 60) {
+    //     return; 
+    // }
 
     // =========================================================
     // 🛑 MODO DE TESTE (TRAVA DE SEGURANÇA)
