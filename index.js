@@ -27,26 +27,22 @@ const userStates = {};
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+                        '--disable-gpu'
+        ],
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined
-    },
-    pairWithPhoneNumber: {
-        phoneNumber: '5598984633233' // Número da Clínica com +55 (Brasil)
     }
 });
 
 client.on('qr', (qr) => {
-    console.log('Gerando código de pareamento, aguarde um instante...');
-});
-
-// Evento exclusivo para Código de Pareamento
-client.on('code', (code) => {
     console.log('\n=========================================');
-    console.log('🤖 CÓDIGO DE CONEXÃO DO ROBÔ POMUS:');
-    console.log(`         >>> ${code} <<<         `);
+    console.log('📱 ESCANEIE ESTE QR CODE PARA CONECTAR O ROBÔ:');
     console.log('=========================================\n');
-    console.log('Vá no seu WhatsApp > Aparelhos Conectados > Conectar com Número de Telefone');
-    console.log('E digite esse código exatamente como está acima!\n');
+    qrcode.generate(qr, {small: true});
 });
 
 client.on('ready', () => {
@@ -59,10 +55,17 @@ const botSentMessages = new Set();
 // Função auxiliar para o bot enviar mensagens sem se silenciar
 async function botSendMessage(to, content, options = {}) {
     try {
+        let number = to.replace('@c.us', '').replace('@g.us', '');
+        if (!userStates[number]) userStates[number] = {};
+        userStates[number].isBotSending = true; // SINALIZA QUE O BOT ESTÁ ENVIANDO
+
         const sentMsg = await client.sendMessage(to, content, options);
-        if (sentMsg && sentMsg.id) {
-            botSentMessages.add(sentMsg.id._serialized);
-        }
+        
+        // Remove a flag após 3 segundos para garantir que o evento message_create passe
+        setTimeout(() => {
+            if (userStates[number]) userStates[number].isBotSending = false;
+        }, 3000);
+
         return sentMsg;
     } catch (e) {
         console.error('[ERROR] Falha ao enviar mensagem pelo bot:', e);
@@ -72,8 +75,10 @@ async function botSendMessage(to, content, options = {}) {
 // Lógica de Autoatendimento (Menu e Fluxo de Agendamento)
 client.on('message_create', async msg => {
     const chat = await msg.getChat();
-    // Se for mensagem em grupo, ignoramos para não fazer spam
-    if (chat.isGroup) return;
+    // Se for mensagem em grupo ou de status, ignoramos totalmente
+    if (chat.isGroup || msg.from === 'status@broadcast' || msg.to === 'status@broadcast') {
+        return;
+    }
 
     // Extrai o número de telefone de forma segura sem usar getContact() (que causa bug em linked devices)
     let number = '';
@@ -87,8 +92,7 @@ client.on('message_create', async msg => {
     // colocamos o estado em "HUMANO" para o robô não sequestrar a conversa quando o cliente responder.
     if (msg.fromMe && msg.to !== msg.from) {
         // Verifica se essa mensagem foi enviada pelo próprio script (Bot)
-        if (botSentMessages.has(msg.id._serialized)) {
-            botSentMessages.delete(msg.id._serialized);
+        if (userStates[number] && userStates[number].isBotSending) {
             return; // Foi o robô que enviou, então não muda o status para HUMANO
         }
 
@@ -473,4 +477,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor de API (Notificações) rodando na porta ${PORT}`);
     console.log(`Você pode enviar requisições POST para http://localhost:${PORT}/send-message`);
+});
+app.get('/debug', (req, res) => {
+    res.json(userStates);
 });
