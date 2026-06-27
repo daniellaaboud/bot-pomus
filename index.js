@@ -24,6 +24,8 @@ const userStates = {};
 // ---------------------------------------------------------
 // 1. Configuração do Bot do WhatsApp
 // ---------------------------------------------------------
+const qrcode = require('qrcode-terminal');
+
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
@@ -35,26 +37,14 @@ const client = new Client({
             '--disable-gpu'
         ],
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined
-    },
-    pairWithPhoneNumber: {
-        phoneNumber: '5598984633233' // Número da Clínica com +55 (Brasil)
     }
 });
 
 client.on('qr', (qr) => {
-    console.log('Gerando código de pareamento, aguarde um instante...');
-});
-
-// Evento exclusivo para Código de Pareamento
-let isBotReady = false;
-
-client.on('code', (code) => {
     console.log('\n=========================================');
-    console.log('🤖 CÓDIGO DE CONEXÃO DO ROBÔ POMUS:');
-    console.log(`         >>> ${code} <<<         `);
+    console.log('📱 ESCANEIE ESTE QR CODE PARA CONECTAR O ROBÔ:');
     console.log('=========================================\n');
-    console.log('Vá no seu WhatsApp > Aparelhos Conectados > Conectar com Número de Telefone');
-    console.log('E digite esse código exatamente como está acima!\n');
+    qrcode.generate(qr, {small: true});
 });
 
 client.on('ready', () => {
