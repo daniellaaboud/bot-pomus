@@ -39,11 +39,16 @@ const client = new Client({
     }
 });
 
+let currentQR = '';
+
 client.on('qr', (qr) => {
+    currentQR = qr;
     console.log('\n=========================================');
     console.log('📱 ESCANEIE ESTE QR CODE PARA CONECTAR O ROBÔ:');
     console.log('=========================================\n');
     qrcode.generate(qr, {small: true});
+    console.log('\n👉 OU ABRA ESTE LINK PARA VER O QR CODE PERFEITO:');
+    console.log('https://bot-pomus.onrender.com/qr\n');
 });
 
 client.on('ready', () => {
@@ -487,6 +492,24 @@ app.get('/debug', (req, res) => {
         isReady: isBotReady,
         users: userStates
     });
+});
+app.get('/qr', (req, res) => {
+    if (currentQR) {
+        res.send(`
+            <html>
+            <body style="display:flex; justify-content:center; align-items:center; height:100vh; background-color:#f0f0f0;">
+                <div style="text-align:center; background:white; padding:40px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+                    <h1 style="font-family:sans-serif; color:#333;">Escaneie o QR Code</h1>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(currentQR)}" style="width:400px; height:400px;" />
+                </div>
+            </body>
+            </html>
+        `);
+    } else if (isBotReady) {
+        res.send('<h1 style="font-family:sans-serif; text-align:center; margin-top:20%;">O Robô já está conectado! ✅</h1>');
+    } else {
+        res.send('<h1 style="font-family:sans-serif; text-align:center; margin-top:20%;">Aguarde... gerando QR Code ⏳</h1>');
+    }
 });
 
 module.exports = { app };
