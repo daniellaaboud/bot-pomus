@@ -24,7 +24,6 @@ const userStates = {};
 // ---------------------------------------------------------
 // 1. Configuração do Bot do WhatsApp
 // ---------------------------------------------------------
-const qrcode = require('qrcode-terminal');
 
 const client = new Client({
     authStrategy: new LocalAuth(),
