@@ -46,6 +46,8 @@ client.on('qr', (qr) => {
 });
 
 // Evento exclusivo para Código de Pareamento
+let isBotReady = false;
+
 client.on('code', (code) => {
     console.log('\n=========================================');
     console.log('🤖 CÓDIGO DE CONEXÃO DO ROBÔ POMUS:');
@@ -56,7 +58,10 @@ client.on('code', (code) => {
 });
 
 client.on('ready', () => {
-    console.log('🤖 Bot do Instituto Pomus está online e pronto!');
+    isBotReady = true;
+    console.log('\n=========================================');
+    console.log('✅ ROBÔ POMUS CONECTADO E PRONTO PARA TRABALHAR!');
+    console.log('=========================================\n');
 });
 
 // Conjunto para rastrear mensagens enviadas pelo próprio robô e não confundi-las com mensagens humanas
@@ -489,5 +494,11 @@ app.listen(PORT, () => {
     console.log(`Você pode enviar requisições POST para http://localhost:${PORT}/send-message`);
 });
 app.get('/debug', (req, res) => {
-    res.json(userStates);
+    res.json({
+        isReady: isBotReady,
+        users: userStates
+    });
 });
+
+module.exports = { app };
+// Forcing restart
