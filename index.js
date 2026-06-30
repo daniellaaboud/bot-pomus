@@ -501,7 +501,7 @@ app.get('/qr', (req, res) => {
         res.send(`
             <html>
             <head>
-                <meta http-equiv="refresh" content="5"> <!-- Atualiza a cada 5 segundos automaticamente -->
+                <meta http-equiv="refresh" content="20"> <!-- Atualiza a cada 20 segundos automaticamente -->
             </head>
             <body style="display:flex; justify-content:center; align-items:center; height:100vh; background-color:#f0f0f0;">
                 <div style="text-align:center; background:white; padding:40px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
