@@ -24,6 +24,7 @@ const userStates = {};
 // ---------------------------------------------------------
 // 1. Configuração do Bot do WhatsApp
 // ---------------------------------------------------------
+const qrcode = require('qrcode-terminal');
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -41,22 +42,17 @@ const client = new Client({
     }
 });
 
-let currentCode = '';
+let currentQR = '';
 let isBotReady = false;
 
-client.on('qr', async (qr) => {
-    // Quando ele gera o QR, nós solicitamos o código de pareamento!
-    console.log('Gerando código de pareamento...');
-    try {
-        const code = await client.requestPairingCode('5598984633233');
-        currentCode = code;
-        console.log('\n=========================================');
-        console.log('🤖 CÓDIGO DE CONEXÃO DO ROBÔ POMUS:');
-        console.log(`         >>> ${code} <<<         `);
-        console.log('=========================================\n');
-    } catch (e) {
-        console.error('Erro ao gerar código:', e);
-    }
+client.on('qr', (qr) => {
+    currentQR = qr;
+    console.log('\n=========================================');
+    console.log('📱 ESCANEIE ESTE QR CODE PARA CONECTAR O ROBÔ:');
+    console.log('=========================================\n');
+    qrcode.generate(qr, {small: true});
+    console.log('\n👉 OU ABRA ESTE LINK PARA VER O QR CODE PERFEITO:');
+    console.log('https://bot-pomus.onrender.com/qr\n');
 });
 
 client.on('ready', () => {
@@ -501,8 +497,8 @@ app.get('/debug', (req, res) => {
         users: userStates
     });
 });
-app.get('/code', (req, res) => {
-    if (currentCode) {
+app.get('/qr', (req, res) => {
+    if (currentQR) {
         res.send(`
             <html>
             <head>
@@ -510,9 +506,9 @@ app.get('/code', (req, res) => {
             </head>
             <body style="display:flex; justify-content:center; align-items:center; height:100vh; background-color:#f0f0f0;">
                 <div style="text-align:center; background:white; padding:40px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-                    <h1 style="font-family:sans-serif; color:#333; font-size: 24px;">Código de Conexão do Robô</h1>
-                    <h2 style="font-family:monospace; color:#005c4b; font-size: 60px; letter-spacing: 10px; margin: 30px 0;">${currentCode}</h2>
-                    <p style="font-family:sans-serif; color:#666; font-size: 18px;">Vá no WhatsApp > Aparelhos Conectados > Conectar com Número de Telefone</p>
+                    <h1 style="font-family:sans-serif; color:#333;">Escaneie o QR Code</h1>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(currentQR)}" style="width:400px; height:400px;" />
+                    <p style="font-family:sans-serif; color:#666; font-size: 16px; margin-top: 20px;">A página atualiza sozinha a cada 5s para o código nunca vencer!</p>
                 </div>
             </body>
             </html>
@@ -520,7 +516,7 @@ app.get('/code', (req, res) => {
     } else if (isBotReady) {
         res.send('<h1 style="font-family:sans-serif; text-align:center; margin-top:20%;">O Robô já está conectado! ✅</h1>');
     } else {
-        res.send('<h1 style="font-family:sans-serif; text-align:center; margin-top:20%;">Aguarde... gerando código de letras ⏳</h1><script>setTimeout(() => location.reload(), 5000);</script>');
+        res.send('<h1 style="font-family:sans-serif; text-align:center; margin-top:20%;">Aguarde... gerando QR Code ⏳ (Essa página atualiza sozinha)</h1><script>setTimeout(() => location.reload(), 5000);</script>');
     }
 });
 
