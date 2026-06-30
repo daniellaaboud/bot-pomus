@@ -49,9 +49,6 @@ mongoose.connect('mongodb+srv://pomus:Pomus2026@pomus.7qtxdzo.mongodb.net/?appNa
     }
 });
 
-let currentQR = '';
-let isBotReady = false;
-
 client.on('qr', (qr) => {
     currentQR = qr;
     console.log('\n=========================================');
