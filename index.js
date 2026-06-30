@@ -1,4 +1,6 @@
-const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
+const { Client, LocalAuth, MessageMedia, RemoteAuth } = require('whatsapp-web.js');
+const mongoose = require('mongoose');
+const { MongoStore } = require('wwebjs-mongo');
 const qrcode = require('qrcode-terminal');
 const express = require('express');
 const cors = require('cors');
@@ -25,8 +27,13 @@ const userStates = {};
 // 1. Configuração do Bot do WhatsApp
 // ---------------------------------------------------------
 
-const client = new Client({
-    authStrategy: new LocalAuth(),
+
+let client;
+mongoose.connect('mongodb+srv://pomus:Pomus2026@pomus.7qtxdzo.mongodb.net/?appName=Pomus').then(() => {
+    console.log('[DB] Conectado ao MongoDB com sucesso!');
+    
+    client = new Client({
+    authStrategy: new RemoteAuth({ store: new MongoStore({ mongoose: mongoose }), backupSyncIntervalMs: 300000 }),
     puppeteer: {
         args: [
             '--no-sandbox',
@@ -52,6 +59,10 @@ client.on('qr', (qr) => {
     qrcode.generate(qr, {small: true});
     console.log('\n👉 OU ABRA ESTE LINK PARA VER O QR CODE PERFEITO:');
     console.log('https://bot-pomus.onrender.com/qr\n');
+});
+
+client.on('remote_session_saved', () => {
+    console.log('[DB] Sessão salva eternamente no MongoDB!');
 });
 
 client.on('ready', () => {
@@ -457,6 +468,8 @@ client.on('message_create', async msg => {
 });
 
 client.initialize();
+});
+
 
 // ---------------------------------------------------------
 // 2. Configuração da API (Servidor de Notificações)
