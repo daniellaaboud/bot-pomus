@@ -27,7 +27,8 @@ const userStates = {};
 // 1. Configuração do Bot do WhatsApp
 // ---------------------------------------------------------
 
-
+let currentQR = '';
+let isBotReady = false;
 let client;
 mongoose.connect('mongodb+srv://pomus:Pomus2026@pomus.7qtxdzo.mongodb.net/?appName=Pomus').then(() => {
     console.log('[DB] Conectado ao MongoDB com sucesso!');
